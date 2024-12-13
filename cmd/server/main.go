@@ -198,8 +198,7 @@ func (ts *TimerServer) handleInfo(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Параметры подключения к базе можно вынести в переменные окружения
-	connStr := "postgres://username:password@localhost/timerdb?sslmode=disable"
-
+    connStr := "postgres://timer_user:timer_password@localhost:5432/timerdb?sslmode=disable&search_path=timer_app"
 	// Проверка переменных окружения
 	if pgConnStr := os.Getenv("DATABASE_URL"); pgConnStr != "" {
 		connStr = pgConnStr

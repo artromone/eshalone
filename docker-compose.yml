@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: timer-postgres
+    environment:
+      POSTGRES_DB: timerdb
+      POSTGRES_USER: timer_user
+      POSTGRES_PASSWORD: timer_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U timer_user -d timerdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Если захотите администратор базы данных
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+volumes:
+  postgres-data:
